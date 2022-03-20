@@ -1,0 +1,101 @@
+div{
+    border: 3px solid black;
+    border-collapse: collapse;
+}
+
+/*SHOP*/
+.shopsContainer{
+    display: flex;
+    flex-direction: row;
+}
+
+
+.shopContainer{
+    width: 400px;
+    height: 300px;
+    margin: 2px;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.shopNameSpace{
+    width: 90%;
+    height: 15%;
+    margin: 2px 2px 2px 2px;
+
+    flex-grow: 1;
+    flex-shrink: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shopScooterSpace{
+    width: 90%;
+    height:75%;
+    margin: 2px 2px 2px 2px;
+
+    flex-grow: 1;
+    flex-shrink: 1;
+
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.scooterContainer{
+    width: 20%;
+    height: 10%;
+    text-align: center;
+    margin: 2px 2px 2px 2px;
+
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+/*CUSTOMER*/
+.reservationFormsContainer, .createFormsContainer{
+    display: flex;
+    flex-flow: row wrap;
+    flex-basis: 300px;
+
+    margin: 2px 2px 2px 2px;
+}
+
+/* .makeReservationFormContainer{
+    
+} */
+
+form{
+    display: flex;
+    flex-direction: column;
+}
+
+.customerNameContainer, .chosenShopContainer, .rentedToContainer, .shopNameContainer, .shopCapacityContainer{
+    display: flex;
+    flex-direction: row;
+}
+
+/* .chosenShopContainer{
+    display: flex;
+    flex-direction: row;
+} */
+
+.buttonsContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+/* .createFormsContainer{
+    display: flex;
+    flex-flow: row wrap;
+} */
+
+button{
+    flex-grow: 1;
+    flex-shrink: 1;
+}

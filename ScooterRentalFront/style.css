@@ -1,0 +1,24 @@
+
+.shopContainer .shopScooterSpace .shopNameSpace .scooterContainer{
+    border: 1px solid black;
+}
+
+.shopContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.shopNameSpace{
+    text-align: center;
+}
+
+.shopScooterSpace{
+    display: flex;
+    flex-direction: row;
+}
+
+.scooterContainer{
+    flex: 1 1 10px;
+    margin: 5px;
+    text-align: center;
+}
