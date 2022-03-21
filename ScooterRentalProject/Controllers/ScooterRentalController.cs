@@ -52,13 +52,23 @@ namespace ScooterRentalProject.Controllers
         {
             Reservation newReservation = new Reservation();
 
-            Customer customer = ScooterRentalContext.Customers.Find(reservationDTO.CustomerID);
-            Shop shop = ScooterRentalContext.Shops.Find(reservationDTO.ShopID);
-            var scooters = from sct in ScooterRentalContext.Scooters where reservationDTO.ScooterIDs.Contains(sct.ScooterID) select sct;
+            Customer newCustomer = new Customer() { CustomerName = reservationDTO.CustomerName };
+            newCustomer = ScooterRentalContext.Customers.Add(newCustomer).Entity;
 
-            newReservation.customer = customer;
+            Shop shop = ScooterRentalContext.Shops.Find(reservationDTO.ShopID);
+
+            var scooters = from sct in ScooterRentalContext.Scooters where reservationDTO.ScooterIDs.Contains(sct.ScooterID) select sct;
+            var scootersList = scooters.ToList();
+
+            newReservation.customer = newCustomer;
             newReservation.shop = shop;
-            newReservation.scooters = scooters;
+            newReservation.scooters = scootersList;
+
+            foreach (var s in scootersList)
+            {
+                s.Rented = true;
+            }
+            ScooterRentalContext.Scooters.UpdateRange(scootersList);
 
             ScooterRentalContext.Reservations.Add(newReservation);
             await ScooterRentalContext.SaveChangesAsync();
@@ -70,7 +80,10 @@ namespace ScooterRentalProject.Controllers
         [HttpPut]
         public async Task<ActionResult<Reservation>> CheckReservation([FromBody] CheckReservationInputDTO reservationDTO)
         {
-            Reservation reservation = await ScooterRentalContext.Reservations.Where(res => res.customer.CustomerID == reservationDTO.CustomerID && res.shop.ShopID == reservationDTO.ShopID)
+            Customer c = ScooterRentalContext.Customers.Where(c => c.CustomerName == reservationDTO.CustomerName)
+                                                      .FirstOrDefault();
+            Reservation reservation = await ScooterRentalContext.Reservations.Include(r => r.shop).Include(r => r.customer).Where(res => res.customer.CustomerID == c.CustomerID
+                                                                                            && res.shop.ShopID == reservationDTO.ShopID)
                                                                              .FirstAsync();
 
             if (reservation != null)
@@ -82,8 +95,12 @@ namespace ScooterRentalProject.Controllers
         [HttpDelete]
         public async Task<IActionResult> CancelReservation([FromBody] ReservationDTO reservationDTO)
         {
-            Reservation reservation = await ScooterRentalContext.Reservations.Where(res => res.customer.CustomerID == reservationDTO.CustomerID && res.shop.ShopID == reservationDTO.ShopID)
-                                                                              .FirstAsync();
+            Customer c = ScooterRentalContext.Customers.Where(cus => cus.CustomerName == reservationDTO.CustomerName)
+                                                       .FirstOrDefault();
+            Reservation reservation = await ScooterRentalContext.Reservations.Where(res => res.customer.CustomerID == c.CustomerID
+                                                                                            && res.shop.ShopID == reservationDTO.ShopID
+                                                                                            /*&& res.RentedFrom == reservationDTO.RentedFrom*/)
+                                                                             .FirstAsync();
 
             if (reservation != null)
             {
