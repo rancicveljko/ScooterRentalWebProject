@@ -33,6 +33,10 @@ namespace ScooterRentalProject.Controllers
             return await ScooterRentalContext.Scooters.Include(x => x.shop).ToListAsync();
         }
 
+        // [HttpPut]
+        // [Route("GetRemainingShops")]
+        // public async Task<ActionResult<IEnumerable<Shop>>> GetRemainingShops([FromBody] )
+
         [HttpPut]
         [Route("GetScootersForShop")]
         public async Task<ActionResult<IEnumerable<Scooter>>> GetScootersForShop([FromBody] GetScootersForShopDTO getScootersDTO)

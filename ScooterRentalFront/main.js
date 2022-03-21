@@ -29,13 +29,14 @@ fetches.getAllScooters();
 // const shop2 = new Shop(2, "Shop2", 5, scooters2);
 // shop2.drawShop();
 
-// // Customer forms
-// const reservationForms = new ReservationForms();
-// reservationForms.setReservationFormsContainer(document.body);
-// reservationForms.setShopsRefs([shop1, shop2]);
-// reservationForms.drawMakeReservationForm();
-// reservationForms.drawCheckReservationForm();
+// Customer forms
+const reservationForms = new ReservationForms();
+reservationForms.setReservationFormsContainer(document.body);
+reservationForms.setShopsRefs(fetches.shopsRefs);
+reservationForms.drawMakeReservationForm();
+reservationForms.drawCheckReservationForm();
 
-// // Create forms
-// const createForms = new CreateForms();
-// createForms.drawCreateForms();
+// Create forms
+const createForms = new CreateForms();
+createForms.drawCreateForms();
+createForms.fetches.setShopsRefs(fetches.shopsRefs);

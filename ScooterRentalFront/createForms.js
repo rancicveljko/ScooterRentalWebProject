@@ -1,8 +1,11 @@
+import { Fetches } from "./fetches.js";
+
 export class CreateForms {
   constructor() {
     this.createFormsContainer = null;
     this.addShopFormContainer = null;
     this.addScooterFormContainer = null;
+    this.fetches = new Fetches();
   }
 
   drawCreateForms() {
@@ -70,6 +73,18 @@ export class CreateForms {
     addShopButton.className = "addShopButton";
     addShopButton.type = "button";
     addShopButton.innerHTML = "Add a shop";
+
+    addShopButton.onclick = (ev) => {
+      const txtShopName = document.querySelector(".txtShopName");
+      const shopName = txtShopName.value;
+
+      const txtShopCapacity = document.querySelector(".txtShopCapacity");
+      const shopCapacity = txtShopCapacity.value;
+
+      // console.log(shopName, shopCapacity);
+      this.fetches.addShop(shopName, shopCapacity);
+    };
+
     buttonsContainer.appendChild(addShopButton);
   }
 
@@ -114,8 +129,6 @@ export class CreateForms {
     txtShopName.type = "text";
     shopNameContainer.appendChild(txtShopName);
 
-
-
     //buttons container
     const buttonsContainer = document.createElement("div");
     buttonsContainer.className = "buttonsContainer";
@@ -126,6 +139,23 @@ export class CreateForms {
     addScooterButton.className = "addScooterButton";
     addScooterButton.type = "button";
     addScooterButton.innerHTML = "Add a scooter";
+
+    addScooterButton.onclick = (ev) => {
+      const txtShopName = document.querySelectorAll(".txtShopName");
+      const shopName = txtShopName[1].value;
+      const shopID = Object.keys(this.fetches.shopsRefs).find(
+        (key) => this.fetches.shopsRefs[key].shopName === shopName
+      );
+      // console.log(shopID);
+
+      const txtScooterPropulsion = document.querySelector(
+        ".txtScooterPropulsion"
+      );
+      const scooterPropulsion = txtScooterPropulsion.value;
+
+      this.fetches.addScooterToShop(shopID, scooterPropulsion);
+    };
+
     buttonsContainer.appendChild(addScooterButton);
   }
 }

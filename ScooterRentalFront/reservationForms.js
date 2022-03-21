@@ -8,11 +8,11 @@ export class ReservationForms {
   }
 
   setShopsRefs(shops) {
-    const sps = shops;
-    this.shopsRefsDict = {};
-    sps.forEach((elm) => {
-      this.shopsRefsDict[elm.shopName] = elm.scooters;
-    });
+    // const sps = shops;
+    this.shopsRefsDict = shops;
+    // sps.forEach((elm) => {
+    //   this.shopsRefsDict[elm.shopName] = elm.scooters;
+    // });
   }
 
   setReservationFormsContainer(host) {

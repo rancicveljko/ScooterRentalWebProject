@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4piJH5n2BtJLAs5jDws9/oTmQaSYo6lMKY3XODz2dlrIpx8Yv/0SvU3b9Zl9aml4XqPC1ClX5rfAw2T74x3vgQ==",
+  "dgSpecHash": "jIAs869uB74kpj/ALnxJVFXUcBrX1iM3c+EIYXXte1fABJRnjl3VLR+zFGrXITXWT7kNuzCv/uTCNFZAtW151g==",
   "success": true,
-  "projectFilePath": "E:\\Rabote za fax\\III\\WP\\ScooterRentalProject\\ScooterRentalProject.csproj",
+  "projectFilePath": "E:\\Rabote za fax\\III\\WP\\github_repo\\ScooterRentalProject\\ScooterRentalProject.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\wexla\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\wexla\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",

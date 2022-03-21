@@ -3,7 +3,15 @@ import { Shop } from "./shop2.js";
 
 export class Fetches {
   constructor() {
-    this.shopsRefs = {};
+    this.shopsRefs = {}; // nije static i onda createForms nema refs
+  }
+
+  setShopsRefs(shopsRefs) {
+    this.shopsRefs = shopsRefs;
+  }
+
+  getShopRefs() {
+    return this.shopsRefs;
   }
 
   getAllShops() {
@@ -28,24 +36,25 @@ export class Fetches {
     fetch("https://localhost:5001/ScooterRental/GetAllScooters").then((p) => {
       p.json().then((allScts) => {
         allScts.forEach((sct) => {
-          // console.log(sct);
+          // console.log(this.shopsRefs[sct.shop.shopID]);
           const newSct = new Scooter(sct.scooterID, sct.propulsion);
           this.shopsRefs[sct.shop.shopID].scooters.push(newSct);
-          // this.shopsRefs[sct.shop.shopID].remove();
-          this.shopsRefs[sct.shop.shopID].drawShop();
+          this.shopsRefs[sct.shop.shopID].drawScooters(
+            this.shopsRefs[sct.shop.shopID].shopScooterSpace
+          );
         });
       });
     });
   }
 
-  addShop(shop) {
-    if (typeof shop !== typeof Shop) {
-      throw new Error(
-        "To add a shop, you need to pass a Shop type argument (check server documentation)"
-      );
-    }
+  addShop(sName, sCapacity) {
+    // if (typeof sName !== typeof String || typeof sCapacity !== Number) {
+    //   throw new Error(
+    //     "To add a shop, you need to pass a String type argument and a Number type agrument (check server documentation)"
+    //   );
+    // }
 
-    const addShopDTO = { shopName: shop.shopName, capacity: shop.capacity };
+    const addShopDTO = { shopName: sName, capacity: sCapacity };
 
     fetch("https://localhost:5001/ScooterRental/AddShop", {
       method: "POST",
@@ -54,22 +63,28 @@ export class Fetches {
       },
       body: JSON.stringify(addShopDTO),
     });
+
+    // this.shopsRefs.forEach(s=>{
+    //   s.shopContainer.remove();
+    // });
+
+    // this.getAllShops();
   }
 
-  addScooterToShop(shop, scooter) {
-    if (typeof shop !== typeof Shop || typeof scooter !== typeof Scooter) {
-      throw new Error(
-        "To add a scooter to a shop, you need to pass a Shop type argument and a Scooter type argument (check server documentation)"
-      );
-    }
+  addScooterToShop(shopID, propulsion) {
+    // if (typeof shop !== typeof Shop || typeof scooter !== typeof Scooter) {
+    //   throw new Error(
+    //     "To add a scooter to a shop, you need to pass a Shop type argument and a Scooter type argument (check server documentation)"
+    //   );
+    // }
 
     const addScooterToShopDTO = {
-      shopID: shop.shopID,
-      propulsion: scooter.propulsion,
+      shopID: shopID,
+      propulsion: propulsion,
     };
 
     fetch("https://localhost:5001/ScooterRental/AddScooterToShop", {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },

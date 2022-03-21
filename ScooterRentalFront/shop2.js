@@ -5,6 +5,8 @@ export class Shop {
     this.maxCapacity = capacity;
     this.scooters = scooters;
     this.currCapacity = this.scooters.length;
+    this.shopContainer = null;
+    this.shopScooterSpace = null;
   }
 
   static shopsContainer = null;
@@ -25,10 +27,10 @@ export class Shop {
   }
 
   drawShopContainer(host) {
-    const shopContainer = document.createElement("div");
-    shopContainer.className = "shopContainer";
-    host.appendChild(shopContainer);
-    return shopContainer;
+    this.shopContainer = document.createElement("div");
+    this.shopContainer.className = "shopContainer";
+    host.appendChild(this.shopContainer);
+    return this.shopContainer;
   }
 
   drawShopNameSpace(host) {
@@ -44,13 +46,11 @@ export class Shop {
   }
 
   drawScooterSpace(host) {
-    const shopScooterSpace = document.createElement("div");
-    shopScooterSpace.className = "shopScooterSpace";
+    this.shopScooterSpace = document.createElement("div");
+    this.shopScooterSpace.className = "shopScooterSpace";
 
-    //dodaj table za skutere
-
-    host.appendChild(shopScooterSpace);
-    return shopScooterSpace;
+    host.appendChild(this.shopScooterSpace);
+    return this.shopScooterSpace;
   }
 
   drawScooters(host) {

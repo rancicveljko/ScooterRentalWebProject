@@ -32,8 +32,8 @@ namespace ScooterRentalProject
                 options.AddPolicy("CORS", builder=>{
                     builder.AllowAnyHeader()
                            .AllowAnyMethod()
-                           .AllowAnyOrigin();
-                        //    .WithOrigins(new string[]{"http://127.0.0.1:5500"});
+                        //    .AllowAnyOrigin();
+                           .WithOrigins(new string[]{"http://127.0.0.1:5500"});
                 });
             });
             services.AddControllers();
