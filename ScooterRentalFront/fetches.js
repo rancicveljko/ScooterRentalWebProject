@@ -14,37 +14,44 @@ export class Fetches {
     return this.shopsRefs;
   }
 
-  getAllShops() {
+  async getAllShops() {
     // p = promise
-    fetch("https://localhost:5001/ScooterRental/GetAllShops").then((p) => {
-      p.json().then((allShops) => {
-        allShops.forEach((shop) => {
-          const newShop = new Shop(
-            shop.shopID,
-            shop.shopName,
-            shop.capacity,
-            []
-          );
-          newShop.drawShop();
-          this.shopsRefs[newShop.shopID] = newShop;
+    await fetch("https://localhost:5001/ScooterRental/GetAllShops").then(
+      (p) => {
+        p.json().then((allShops) => {
+          allShops.forEach((shop) => {
+            const newShop = new Shop(
+              shop.shopID,
+              shop.shopName,
+              shop.capacity,
+              []
+            );
+            newShop.drawShop();
+            this.shopsRefs[newShop.shopID] = newShop;
+          });
         });
-      });
-    });
+      }
+    );
   }
 
-  getAllScooters() {
-    fetch("https://localhost:5001/ScooterRental/GetAllScooters").then((p) => {
-      p.json().then((allScts) => {
-        allScts.forEach((sct) => {
-          // console.log(this.shopsRefs[sct.shop.shopID]);
-          const newSct = new Scooter(sct.scooterID, sct.propulsion);
-          this.shopsRefs[sct.shop.shopID].scooters.push(newSct);
-          this.shopsRefs[sct.shop.shopID].drawScooters(
-            this.shopsRefs[sct.shop.shopID].shopScooterSpace
-          );
+  async getAllScooters() {
+    await fetch("https://localhost:5001/ScooterRental/GetAllScooters").then(
+      (p) => {
+        p.json().then((allScts) => {
+          allScts.forEach((sct) => {
+            // console.log(this.shopsRefs[sct.shop.shopID]);
+            const newSct = new Scooter(sct.scooterID, sct.propulsion);
+            this.shopsRefs[sct.shop.shopID].scooters.push(newSct);
+            // this.shopsRefs[sct.shop.shopID].drawScooters(
+            //   this.shopsRefs[sct.shop.shopID].shopScooterSpace
+            // );
+          });
+          Object.values(this.shopsRefs).forEach((s) => {
+            s.drawScooters(s.shopScooterSpace);
+          });
         });
-      });
-    });
+      }
+    );
   }
 
   addShop(sName, sCapacity) {
@@ -62,13 +69,16 @@ export class Fetches {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(addShopDTO),
+    }).then((p) => {
+      if (p.status !== 200) {
+        alert("A problem occurred while attemping to execute AddShop");
+      }
     });
 
-    // this.shopsRefs.forEach(s=>{
-    //   s.shopContainer.remove();
-    // });
-
-    // this.getAllShops();
+    // re render
+    this.shopsRefs[1].shopContainer.parentNode.innerHTML = "";
+    this.getAllShops();
+    this.getAllScooters();
   }
 
   addScooterToShop(shopID, propulsion) {
@@ -83,12 +93,91 @@ export class Fetches {
       propulsion: propulsion,
     };
 
+    // console.log(this.shopsRefs[1]);
+
     fetch("https://localhost:5001/ScooterRental/AddScooterToShop", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(addScooterToShopDTO),
+    }).then((p) => {
+      if (p.status !== 200) {
+        alert("A problem occurred while executing AddScooterToShop");
+      }
+    });
+
+    // re render
+    this.shopsRefs[1].shopContainer.parentNode.innerHTML = "";
+    this.getAllShops();
+    this.getAllScooters();
+  }
+
+  updateShopCapacity(shopID, newCapacity) {
+    const updateShopCapacityDTO = { shopID: shopID, capacity: newCapacity };
+
+    fetch("https://localhost:5001/ScooterRental/UpdateShopCapacity", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updateShopCapacityDTO),
+    }).then((p) => {
+      if (p.status !== 200) {
+        alert("A problem occurred while executing UpdateShopCapacity");
+      } else {
+        alert("Successfully updated shop to new capacity.");
+      }
+    });
+  }
+
+  removeScooters(scooterIDs) {
+    // console.log(this.shopsRefs);
+
+    const removeScootersDTO = { scooterIDs: scooterIDs };
+
+    fetch("https://localhost:5001/ScooterRental/RemoveScootersFromShop", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(removeScootersDTO),
+    }).then((p) => {
+      if (p.status !== 200) {
+        alert("A problem occurred while executing RemoveScooters");
+      } else {
+        alert("Successfully removed scooters.");
+      }
+    });
+
+    // re render
+    this.shopsRefs[1].shopContainer.parentNode.innerHTML = "";
+    this.getAllShops();
+    this.getAllScooters();
+  }
+
+  makeReservation(shopID, customerName, scooterIDs, rentedFrom, rentedTo) {
+    const reservationDTO = {
+      customerName: customerName,
+      shopID: shopID,
+      scooterIDs: scooterIDs,
+      rentedFrom: rentedFrom,
+      rentedTo: rentedTo,
+    };
+
+    // console.log(JSON.stringify(reservationDTO));
+    fetch("https://localhost:5001/ScooterRental/CreateReservation", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(reservationDTO),
+    }).then((p) => {
+      if (p.status !== 200) {
+        alert("A problem occurred while executing CreateReservation");
+      } else {
+        alert("Successfully made a reservation");
+      }
     });
   }
 }

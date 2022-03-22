@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -60,9 +61,15 @@ namespace ScooterRentalProject.Controllers
             var scooters = from sct in ScooterRentalContext.Scooters where reservationDTO.ScooterIDs.Contains(sct.ScooterID) select sct;
             var scootersList = scooters.ToList();
 
+            var rentedFrom = DateTime.Parse(reservationDTO.RentedFrom);
+            var rentedTo = DateTime.Parse(reservationDTO.RentedTo);
+
             newReservation.customer = newCustomer;
             newReservation.shop = shop;
             newReservation.scooters = scootersList;
+            newReservation.RentedFrom = rentedFrom;
+            newReservation.RentedTo = rentedTo;
+
 
             foreach (var s in scootersList)
             {
@@ -141,6 +148,50 @@ namespace ScooterRentalProject.Controllers
             // shp.scooters.Append(scooter);
 
             ScooterRentalContext.Scooters.Add(scooter);
+            await ScooterRentalContext.SaveChangesAsync();
+            return new StatusCodeResult(200);
+        }
+
+        [HttpDelete]
+        [Route("RemoveShop/{shopID}")]
+        public async Task<IActionResult> RemoveShop([FromRoute] int shopID)
+        {
+            Shop shop = ScooterRentalContext.Shops.Find(shopID);
+            if (shop != null)
+            {
+                ScooterRentalContext.Shops.Remove(shop);
+                await ScooterRentalContext.SaveChangesAsync();
+                return new StatusCodeResult(200);
+            }
+            return new StatusCodeResult(500);
+        }
+
+        [HttpPut]
+        [Route("UpdateShopCapacity")]
+        public async Task<IActionResult> UpdateShopCapacity([FromBody] UpdateShopCapacityDTO updateShopCapacityDTO)
+        {
+            Shop shop = ScooterRentalContext.Shops.Find(updateShopCapacityDTO.ShopID);
+
+            if (shop == null)
+                return new StatusCodeResult(500);
+
+            shop.Capacity = updateShopCapacityDTO.Capacity;
+            ScooterRentalContext.Shops.Update(shop);
+            await ScooterRentalContext.SaveChangesAsync();
+
+            return new StatusCodeResult(200);
+        }
+
+        [HttpDelete]
+        [Route("RemoveScootersFromShop")]
+        public async Task<IActionResult> RemoveScootersFromShop([FromBody] ScooterIDsDTO scooterIDsDTO)
+        {
+            var scooters = ScooterRentalContext.Scooters.Where(s => scooterIDsDTO.ScooterIDs.Contains(s.ScooterID)).ToList();
+
+            if (scooters == null)
+                return new StatusCodeResult(500);
+
+            ScooterRentalContext.Scooters.RemoveRange(scooters);
             await ScooterRentalContext.SaveChangesAsync();
             return new StatusCodeResult(200);
         }

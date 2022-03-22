@@ -6,15 +6,17 @@ div{
 /*SHOP*/
 .shopsContainer{
     display: flex;
-    flex-direction: row;
+    flex-flow: row wrap;
+    border-radius: 10px;
+    align-items: center;
 }
 
 
 .shopContainer{
-    width: 400px;
     height: 300px;
     margin: 2px;
     
+    flex-basis: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -49,6 +51,8 @@ div{
     width: 20%;
     height: 10%;
     text-align: center;
+    overflow: hidden;
+    text-overflow: clip;
     margin: 2px 2px 2px 2px;
 
     flex-grow: 1;
@@ -56,12 +60,13 @@ div{
 }
 
 /*CUSTOMER*/
-.reservationFormsContainer, .createFormsContainer{
+.reservationFormsContainer, .createFormsContainer, .removeFormsContainer, .updateShopCapacityContainer{
     display: flex;
     flex-flow: row wrap;
     flex-basis: 300px;
 
     margin: 2px 2px 2px 2px;
+    border-radius: 10px;
 }
 
 /* .makeReservationFormContainer{

@@ -3,6 +3,7 @@ import { Scooter } from "./scooter2.js";
 import { ReservationForms } from "./reservationForms.js";
 import { CreateForms } from "./createForms.js";
 import { Fetches } from "./fetches.js";
+import { RemoveForms } from "./removeForms.js";
 
 //privremeno
 Shop.drawShopsContainer(document.body);
@@ -32,7 +33,7 @@ fetches.getAllScooters();
 // Customer forms
 const reservationForms = new ReservationForms();
 reservationForms.setReservationFormsContainer(document.body);
-reservationForms.setShopsRefs(fetches.shopsRefs);
+reservationForms.fetches.setShopsRefs(fetches.shopsRefs);
 reservationForms.drawMakeReservationForm();
 reservationForms.drawCheckReservationForm();
 
@@ -40,3 +41,8 @@ reservationForms.drawCheckReservationForm();
 const createForms = new CreateForms();
 createForms.drawCreateForms();
 createForms.fetches.setShopsRefs(fetches.shopsRefs);
+
+// Remove forms
+const removeForms = new RemoveForms();
+removeForms.fetches.setShopsRefs(fetches.shopsRefs);
+removeForms.drawRemoveForms();

@@ -5,22 +5,29 @@ export class Scooter {
     this.selected = false;
   }
 
-  getSelected() {
-    return this.selected;
-  }
-
   drawScooterContainer(host) {
     const scooterContainer = document.createElement("div");
     scooterContainer.className = "scooterContainer";
-    scooterContainer.innerHTML = this.propulsion;
+    const description = document.createElement("abbr");
+    description.title = this.propulsion;
+    description.innerHTML = this.propulsion;
+    scooterContainer.appendChild(description);
 
+    scooterContainer.scooter = this;
+    scooterContainer.selected = false;
     scooterContainer.addEventListener("click", function (ev) {
-      if (this.selected === false) {
+      if (scooterContainer.selected === false) {
         scooterContainer.style.backgroundColor = "lightgray";
-        this.selected = true; // NE MENJA PROPERTY selected KAD SE POZOVE IZ DRUGE KLASE
+        scooterContainer.scooter.selected = true;
+        scooterContainer.selected = true;
+        // console.log(this.selected);
+        // this.selected = true; // NE MENJA PROPERTY selected KAD SE POZOVE IZ DRUGE KLASE
       } else {
         scooterContainer.style.backgroundColor = "white";
-        this.selected = false;
+        scooterContainer.selected = false;
+        scooterContainer.scooter.selected = false;
+        // console.log(this.selected);
+        // this.selected = false;
       }
     });
 

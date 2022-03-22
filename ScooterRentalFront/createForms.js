@@ -146,6 +146,16 @@ export class CreateForms {
       const shopID = Object.keys(this.fetches.shopsRefs).find(
         (key) => this.fetches.shopsRefs[key].shopName === shopName
       );
+
+      if (
+        this.fetches.shopsRefs[shopID].maxCapacity ===
+        this.fetches.shopsRefs[shopID].currCapacity
+      ) {
+        throw new Error(
+          "This shop's capacity is full, please refrain from adding new scooters."
+        );
+      }
+
       // console.log(shopID);
 
       const txtScooterPropulsion = document.querySelector(

@@ -1,18 +1,12 @@
+import { Fetches } from "./fetches.js";
+
 export class ReservationForms {
   constructor() {
     this.reservationFormsContainer = null;
     this.makeReservationFormContainer = null;
     this.checkReservationFormContainer = null;
 
-    this.shopsRefsDict = null;
-  }
-
-  setShopsRefs(shops) {
-    // const sps = shops;
-    this.shopsRefsDict = shops;
-    // sps.forEach((elm) => {
-    //   this.shopsRefsDict[elm.shopName] = elm.scooters;
-    // });
+    this.fetches = new Fetches();
   }
 
   setReservationFormsContainer(host) {
@@ -90,13 +84,43 @@ export class ReservationForms {
     btnMakeReservation.innerText = "Make a reservation";
     btnMakeReservation.onclick = (ev) => {
       // funkcija koja prosledjuje custonerName, ShopName i scooterID-ove selectovanih scootera
+      const shopName = txtChosenShop.value;
+      const shopID = Object.keys(this.fetches.shopsRefs).find(
+        (key) => this.fetches.shopsRefs[key].shopName === shopName
+      );
 
-      const scooterIDS = this.shopsRefsDict[txtChosenShop.value];
-      console.log(scooterIDS);
-      // scooterIDS
-      //   .filter((sct) => sct.selected === true)
-      //   .map((sct) => sct.scooterID);
-      // alert(`${txtCustomerName.value}, ${txtChosenShop.value}, ${scooterIDS}`);
+      const scooterIDS = this.fetches.shopsRefs[shopID].scooters
+        .filter((sct) => sct.selected === true)
+        .map((sct) => sct.scooterID);
+
+      const txtCustomerName = document.querySelectorAll(".txtCustomerName")[0];
+      const customerName = txtCustomerName.value;
+
+      const timeRentedTo = document.querySelector(".timeRentedTo");
+
+      let today = new Date();
+      let date =
+        today.getFullYear() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getDate();
+
+      const rentedToTime = timeRentedTo.value;
+      const rentedFromTime =
+        today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+      const rentedToFullDateTime = date + " " + rentedToTime;
+      const rentedFromFullDateTime = date + " " + rentedFromTime;
+
+      // console.log(rentedFromFullDateTime, rentedToFullDateTime);
+      this.fetches.makeReservation(
+        shopID,
+        customerName,
+        scooterIDS,
+        rentedFromFullDateTime,
+        rentedToFullDateTime
+      );
     };
     buttonsContainer.appendChild(btnMakeReservation);
   }

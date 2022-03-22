@@ -12,12 +12,12 @@ export class Shop {
   static shopsContainer = null;
 
   drawShop() {
-    const shopsContainer = document.querySelector(".shopsContainer");
+    this.shopsContainer = document.querySelector(".shopsContainer");
 
-    const shopContainer = this.drawShopContainer(shopsContainer);
-    this.drawShopNameSpace(shopContainer);
-    const shopScooterSpace = this.drawScooterSpace(shopContainer);
-    this.drawScooters(shopScooterSpace);
+    this.shopContainer = this.drawShopContainer(this.shopsContainer);
+    this.drawShopNameSpace(this.shopContainer);
+    this.shopScooterSpace = this.drawScooterSpace(this.shopContainer);
+    this.drawScooters(this.shopScooterSpace);
   }
 
   static drawShopsContainer(host) {
